@@ -12,7 +12,7 @@ import {
 } from 'antd';
 
 const ADD_ARTICLE = gql`
-  mutation addArticle($article: hasura_articles_insert_input!) {
+  mutation addArticle($article: articles_insert_input!) {
     insert_articles(objects: [$article]) {
       returning {
         id
@@ -43,13 +43,16 @@ const CreateNews = () => {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         onFinish={e => {
+          console.log(articleTitle)
           addArticle({
             variables: {
-              title: articleTitle,
-              slug: articleSlug,
-              teaser: articleTeaser,
-              body: articleBody,
-              date: articleDate
+              "article": {
+                "title": articleTitle,
+                "slug": articleSlug,
+                "teaser": articleTeaser,
+                "body": articleBody,
+                "created_at": articleDate
+              }
             }
           })
         }}

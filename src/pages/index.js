@@ -1,13 +1,27 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
-import { Card, Row, Col } from 'antd';
-import 'antd/dist/antd.css';
+import { Card, Row, Col } from 'antd'
+import 'antd/dist/antd.css'
+import gql from 'graphql-tag'
+import { useQuery } from 'react-apollo-hooks'
 
 import LayoutMain from "../components/layout"
 import SEO from "../components/seo"
 
-export const query = graphql`
-  {
+// export const query = graphql`
+//   {
+//     news {
+//       articles {
+//         id
+//         title
+//         teaser
+//       }
+//     }
+//   }
+// `;
+
+const GET_ARTICLES = gql`
+  query {
     news {
       articles {
         id
@@ -18,8 +32,13 @@ export const query = graphql`
   }
 `;
 
-const IndexPage = ({ data }) => {
+const IndexPage = () => {
   const { Meta } = Card;
+
+  const { loading, error, data } = useQuery(GET_ARTICLES)
+
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
 
   return (
     <LayoutMain>
