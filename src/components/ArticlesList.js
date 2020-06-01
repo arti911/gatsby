@@ -1,11 +1,11 @@
 import React from 'react'
-import { useQuery } from "@apollo/react-hooks";
+import { useSubscription  } from "@apollo/react-hooks";
 import gql from 'graphql-tag'
 import { Card, Row, Col } from 'antd'
 import { Link } from "gatsby"
 
 const GET_ARTICLES = gql`
-  query {
+  subscription {
     articles {
       id
       title
@@ -16,7 +16,7 @@ const GET_ARTICLES = gql`
 
 const ArticlesList = () => {
   const { Meta } = Card;
-  const { loading, error, data } = useQuery(GET_ARTICLES)
+  const { loading, error, data } = useSubscription(GET_ARTICLES)
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;

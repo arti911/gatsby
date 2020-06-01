@@ -55,6 +55,10 @@ const AddArticle = () => {
               }
             }
           })
+          setArticleTitle("")
+          setArticleSlug("")
+          setArticleTeaser("")
+          setArticleBody("")
         }}
       >
         <Form.Item label="Заголовок">
@@ -71,9 +75,10 @@ const AddArticle = () => {
         </Form.Item>
         <Form.Item label="Select">
           <Select mode="multiple" placeholder="Please select favourite colors">
-            <Option value="red">Red</Option>
-            <Option value="green">Green</Option>
-            <Option value="blue">Blue</Option>
+            <Option value="2">Наука</Option>
+            <Option value="1">Спорт</Option>
+            <Option value="3">Бизнес</Option>
+            <Option value="4">Все новости</Option>
           </Select>
         </Form.Item>
         <Form.Item label="DatePicker">
