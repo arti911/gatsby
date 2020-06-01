@@ -6,12 +6,10 @@ import { Link } from "gatsby"
 
 const GET_ARTICLES = gql`
   query {
-    news {
-      articles {
-        id
-        title
-        teaser
-      }
+    articles {
+      id
+      title
+      teaser
     }
   }
 `;
