@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{"2Dcx":function(n,e,t){"use strict";t.r(e);var c=t("q1tI"),o=t.n(c);e.default=function(){return o.a.createElement("div",null,"Hello")}}}]);
-//# sourceMappingURL=component---src-components-section-news-js-7b1fad46ced4fa3a149b.js.map
