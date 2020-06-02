@@ -22,10 +22,10 @@ const ArticlesList = () => {
   if (error) return `Error! ${error.message}`;
 
   return (
-    <Row>
+    <Row gutter={[16, 24]}>
       {data.articles.map(article =>
         (
-          <Col className="gutter-row" xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }} key={article.id}>
+          <Col className="gutter-row" xs={24} md={12} lg={8} xl={6} key={article.id}>
             <Card
                 hoverable
                 cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}

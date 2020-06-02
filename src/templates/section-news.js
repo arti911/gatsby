@@ -26,10 +26,10 @@ export const query =  graphql`
 
     return (
         <Layout>
-          <Row gutter={[8, 8]}>
+          <Row gutter={[16, 24]}>
             {
               articles.map(el => (
-                <Col className="gutter-row" xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }} key={el.article.id}>
+                <Col className="gutter-row" xs={24} md={12} lg={8} xl={6} key={el.article.id}>
                   <Card
                     hoverable
                     cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>}

@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql, Link } from "gatsby"
-import { Menu, Layout } from 'antd';
+import { Menu, Layout, Row, Col } from 'antd';
 
 import Header from "./header"
 
@@ -23,28 +23,30 @@ const LayoutMain = ({ children }) => {
     }
   `)
 
-  const { Sider, Content } = Layout;
+  const { Sider } = Layout;
 
   return (
     <>
       <Header siteTitle={data.site.siteMetadata.title} />
       <div>
-        <Layout>
-          <Sider>
-            <Menu>
-              {
-                data.news.categories.map(item => (
-                  <Menu.Item key={item.id}>
-                    <Link to={`/${item.slug}`}>{item.name_rubric}</Link>
-                  </Menu.Item>
-                ))
-              }
-            </Menu>
+        <Row>
+          <Col lg={4}>
+            <Sider>
+              <Menu>
+                {
+                  data.news.categories.map(item => (
+                    <Menu.Item key={item.id}>
+                      <Link to={`/${item.slug}`}>{item.name_rubric}</Link>
+                    </Menu.Item>
+                  ))
+                }
+              </Menu>
             </Sider>
-            <Content>
-              <main>{children}</main>
-            </Content>
-        </Layout>
+          </Col>
+          <Col lg={20}>
+              <main style={{ padding: '8px'}}>{children}</main>
+          </Col>
+        </Row>
       </div>
       <footer>
         © {new Date().getFullYear()}, Built with

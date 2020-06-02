@@ -38,7 +38,7 @@ const AddArticle = () => {
 
   return (
     <>
-      <Title>Добавить новость</Title>
+      <Title style={{ textAlign: 'center' }}>Добавить новость</Title>
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
@@ -61,23 +61,43 @@ const AddArticle = () => {
           setArticleBody("")
         }}
       >
-        <Form.Item label="Заголовок">
+        <Form.Item label="Заголовок" name="title" rules={[
+          {
+            required: true,
+            message: 'Please input your title!',
+          },
+        ]}>
           <Input value={articleTitle} onChange={e => (setArticleTitle(e.target.value))} />
         </Form.Item>
-        <Form.Item label="Латиница">
+        <Form.Item label="Латиница" name="slug" rules={[
+          {
+            required: true,
+            message: 'Please input your slug!',
+          },
+        ]}>
           <Input value={articleSlug} onChange={e => (setArticleSlug(e.target.value))} />
         </Form.Item>
-        <Form.Item label="Тизер">
+        <Form.Item label="Тизер" name="teaser" rules={[
+          {
+            required: true,
+            message: 'Please input your teaser!',
+          },
+        ]}>
           <Input value={articleTeaser} onChange={e => (setArticleTeaser(e.target.value))} />
         </Form.Item>
-        <Form.Item label="Текст">
+        <Form.Item label="Текст" name="text" rules={[
+          {
+            required: true,
+            message: 'Please input your text!',
+          },
+        ]}>
           <TextArea value={articleBody} onChange={e => (setArticleBody(e.target.value))} />
         </Form.Item>
         <Form.Item label="Select">
-          <Select mode="multiple" placeholder="Please select favourite colors">
-            <Option value="2">Наука</Option>
-            <Option value="1">Спорт</Option>
-            <Option value="3">Бизнес</Option>
+          <Select mode="multiple" placeholder="Please select categories article">
+            <Option value="3">Наука</Option>
+            <Option value="2">Спорт</Option>
+            <Option value="1">Бизнес</Option>
             <Option value="4">Все новости</Option>
           </Select>
         </Form.Item>
