@@ -16,6 +16,9 @@ const ADD_ARTICLE = gql`
       returning {
         id
         title
+        articles_categories {
+          category_id
+        }
       }
     }
   }
@@ -30,6 +33,7 @@ const AddArticle = () => {
   const [articleSlug, setArticleSlug] = useState('')
   const [articleTeaser, setArticleTeaser] = useState('')
   const [articleBody, setArticleBody] = useState('')
+  const [articleCategories, setArticleCategories] = useState(4)
   const [articleDate, setArticleDate] = useState('2020-06-01')
   const [insert_article, { loading, error }] = useMutation(ADD_ARTICLE);
 
@@ -51,7 +55,12 @@ const AddArticle = () => {
                 "slug": articleSlug,
                 "teaser": articleTeaser,
                 "body": articleBody,
-                "created_at": articleDate
+                "created_at": articleDate,
+                "articles_categories": {
+                  "data": {
+                    "category_id": articleCategories
+                  }
+                }
               }
             }
           })
@@ -94,7 +103,7 @@ const AddArticle = () => {
           <TextArea value={articleBody} onChange={e => (setArticleBody(e.target.value))} />
         </Form.Item>
         <Form.Item label="Select">
-          <Select mode="multiple" placeholder="Please select categories article">
+          <Select placeholder="Please select categories article" onChange={e => (setArticleCategories(parseInt(e)))}>
             <Option value="3">Наука</Option>
             <Option value="2">Спорт</Option>
             <Option value="1">Бизнес</Option>
