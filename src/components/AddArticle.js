@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 import {
@@ -8,6 +8,7 @@ import {
   Button,
   Select,
   DatePicker,
+  message
 } from 'antd';
 
 const ADD_ARTICLE = gql`
@@ -28,89 +29,115 @@ const AddArticle = () => {
   const { Title } = Typography;
   const { TextArea } = Input;
   const { Option } = Select;
+  const [form] = Form.useForm();
+  const [insert_article, { loading, error } ] = useMutation(ADD_ARTICLE);
+  const key = 'updatable';
 
-  const [articleTitle, setArticleTitle] = useState('')
-  const [articleSlug, setArticleSlug] = useState('')
-  const [articleTeaser, setArticleTeaser] = useState('')
-  const [articleBody, setArticleBody] = useState('')
-  const [articleCategories, setArticleCategories] = useState(4)
-  const [articleDate, setArticleDate] = useState('2020-06-01')
-  const [insert_article, { loading, error }] = useMutation(ADD_ARTICLE);
+  const postArticle = () => {
+    if (loading) message.loading({ content: 'Loading...', key})
 
-  if (loading) return "loading...";
-  if (error) return `error: ${error.message}`;
+    if (error) {
+      message.error({ content: `error: ${error.message}`, key})
+    } else {
+      message.success({ content: 'Loaded!', key, duration: 2 })
+      form.resetFields()
+    }
+  }
+
+  const onFinish = value => {
+    insert_article({
+      variables: {
+        "article": value
+      }
+    })
+    postArticle()
+  }
+
+  //   insert_article({
+  //     variables: {
+  //       "article": {
+  //         "articles_categories": {
+  //           "data": {
+  //             "category_id": articleCategories
+  //           }
+  //         }
+  //       }
+  //     }
+  //   })
 
   return (
     <>
       <Title style={{ textAlign: 'center' }}>Добавить новость</Title>
       <Form
+        form={form}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
-        onFinish={() => {
-          insert_article({
-            variables: {
-              "article": {
-                "title": articleTitle,
-                "slug": articleSlug,
-                "teaser": articleTeaser,
-                "body": articleBody,
-                "created_at": articleDate,
-                "articles_categories": {
-                  "data": {
-                    "category_id": articleCategories
-                  }
-                }
-              }
-            }
-          })
-          setArticleTitle("")
-          setArticleSlug("")
-          setArticleTeaser("")
-          setArticleBody("")
-        }}
+        onFinish={onFinish}
       >
-        <Form.Item label="Заголовок" name="title" rules={[
-          {
-            required: true,
-            message: 'Please input your title!',
-          },
-        ]}>
-          <Input value={articleTitle} onChange={e => (setArticleTitle(e.target.value))} />
+        <Form.Item
+          label="Заголовок"
+          name="title"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your title!',
+            },
+          ]}
+        >
+          <Input />
         </Form.Item>
-        <Form.Item label="Латиница" name="slug" rules={[
-          {
-            required: true,
-            message: 'Please input your slug!',
-          },
-        ]}>
-          <Input value={articleSlug} onChange={e => (setArticleSlug(e.target.value))} />
+        <Form.Item
+          label="Латиница"
+          name="slug"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your slug!',
+            },
+          ]}
+        >
+          <Input />
         </Form.Item>
-        <Form.Item label="Тизер" name="teaser" rules={[
-          {
-            required: true,
-            message: 'Please input your teaser!',
-          },
-        ]}>
-          <Input value={articleTeaser} onChange={e => (setArticleTeaser(e.target.value))} />
+        <Form.Item
+          label="Тизер"
+          name="teaser"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your teaser!',
+            },
+          ]}
+        >
+          <Input />
         </Form.Item>
-        <Form.Item label="Текст" name="text" rules={[
-          {
-            required: true,
-            message: 'Please input your text!',
-          },
-        ]}>
-          <TextArea value={articleBody} onChange={e => (setArticleBody(e.target.value))} />
+        <Form.Item
+          label="Текст"
+          name="body"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your text!',
+            },
+          ]}
+        >
+          <TextArea />
         </Form.Item>
-        <Form.Item label="Select">
-          <Select placeholder="Please select categories article" onChange={e => (setArticleCategories(parseInt(e)))}>
+        {/* <Form.Item
+          label="Select"
+          name="category_id"
+        >
+          <Select placeholder="Please select categories article" >
             <Option value="3">Наука</Option>
             <Option value="2">Спорт</Option>
             <Option value="1">Бизнес</Option>
             <Option value="4">Все новости</Option>
           </Select>
-        </Form.Item>
-        <Form.Item label="DatePicker">
+        </Form.Item> */}
+        <Form.Item
+          label="DatePicker"
+          name="created_at"
+        >
           <DatePicker />
         </Form.Item>
         <Form.Item label="Button">
