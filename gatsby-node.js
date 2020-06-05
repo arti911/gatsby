@@ -1,28 +1,36 @@
-exports.createPages = async ({ actions: { createPage }, graphql }) => {
-  const result = await graphql(`
+const path = require('path')
+
+exports.createPages = async ({ actions, graphql }) => {
+  const { createPage } = actions
+
+  const articleTemp = path.resolve('src/templates/news.js')
+  const articlesSectionTemp = path.resolve('src/templates/section-news.js')
+
+  const { data } = await graphql(`
     {
       news {
         articles {
           id
           teaser
+          slug
         }
         categories {
-          id,
-          name_rubric,
-          title,
-          slug,
+          id
+          name_rubric
+          title
+          slug
         }
       }
     }
   `)
 
-  const news = result.data.news.articles;
-  const categories = result.data.news.categories;
+  const article = data.news.articles;
+  const categories = data.news.categories;
 
-  news.forEach(el => {
+  article.forEach(el => {
     createPage({
-      path: `/${el.id}/`,
-      component: require.resolve('./src/templates/news.js'),
+      path: `/${el.slug}/`,
+      component: articleTemp,
       context: {
         id: el.id
       }
@@ -32,28 +40,9 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
   categories.forEach(el => {
     createPage({
       path: `/${el.slug}/`,
-      component: require.resolve('./src/templates/section-news.js'),
+      component: articlesSectionTemp,
       context: {
         id: el.id
-      }
-    })
-  })
-
-  const articlesPerPage = 2
-  const numOfPages = Math.ceil( news.length / articlesPerPage )
-
-  Array.from({ length: numOfPages }).forEach((_, index) => {
-    const isFirstPage = index === 0
-    const currentPage = index + 1
-
-    if (isFirstPage) return
-
-    createPage({
-      path: `/page/${currentPage}`,
-      component: require.resolve('./src/templates/article-list.js'),
-      context: {
-        limit: articlesPerPage,
-        currentPage
       }
     })
   })

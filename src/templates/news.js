@@ -14,12 +14,12 @@ export const query = graphql`
 `;
 
 const News = ({ data }) => {
-  const qq = data.news.articles;
+  const { news: { articles } } = data
 
   return (
     <Layout>
       <Link to="/">&larr; Назад</Link>
-      <pre>{JSON.stringify(qq, null, 1)}</pre>
+      <pre>{JSON.stringify(articles, null, 1)}</pre>
     </Layout>
   )
 }

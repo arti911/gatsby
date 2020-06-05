@@ -10,6 +10,7 @@ const GET_ARTICLES = gql`
       id
       title
       teaser
+      slug
     }
   }
 `;
@@ -30,7 +31,7 @@ const ArticlesList = () => {
                 hoverable
                 cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
             >
-              <Link to={`/${article.id}`}>{article.title}</Link>
+              <Link to={`/${article.slug}`}>{article.title}</Link>
               <Meta description={article.teaser} />
             </Card>
           </Col>

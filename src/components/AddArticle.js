@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 import {
@@ -45,6 +45,15 @@ const AddArticle = () => {
   }
 
   const onFinish = value => {
+    const data = {
+      "data": {
+        "category_id": parseInt(value.category_id)
+      }
+    }
+
+    value.articles_categories = data
+    delete value.category_id
+
     insert_article({
       variables: {
         "article": value
@@ -52,18 +61,6 @@ const AddArticle = () => {
     })
     postArticle()
   }
-
-  //   insert_article({
-  //     variables: {
-  //       "article": {
-  //         "articles_categories": {
-  //           "data": {
-  //             "category_id": articleCategories
-  //           }
-  //         }
-  //       }
-  //     }
-  //   })
 
   return (
     <>
@@ -123,9 +120,15 @@ const AddArticle = () => {
         >
           <TextArea />
         </Form.Item>
-        {/* <Form.Item
+        <Form.Item
           label="Select"
           name="category_id"
+          rules={[
+            {
+              required: true,
+              message: 'Please select categories article'
+            }
+          ]}
         >
           <Select placeholder="Please select categories article" >
             <Option value="3">Наука</Option>
@@ -133,10 +136,16 @@ const AddArticle = () => {
             <Option value="1">Бизнес</Option>
             <Option value="4">Все новости</Option>
           </Select>
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           label="DatePicker"
           name="created_at"
+          rules={[
+            {
+              required: true,
+              message: 'Please select date'
+            }
+          ]}
         >
           <DatePicker />
         </Form.Item>

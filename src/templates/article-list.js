@@ -18,10 +18,9 @@ export const GET_ARTICLES = graphql`
   }
 `;
 
-const ArticleList = ({ data, pageContext }) => {
+const ArticleList = ({ data }) => {
   const { Meta } = Card;
 
-  console.log(pageContext.currentPage)
   return (
     <Layout>
       <Row gutter={[16, 24]}>
