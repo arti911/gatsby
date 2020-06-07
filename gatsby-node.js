@@ -1,49 +1,59 @@
 const path = require('path')
 
-exports.createPages = async ({ actions, graphql }) => {
+exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const articleTemp = path.resolve('src/templates/news.js')
-  const articlesSectionTemp = path.resolve('src/templates/section-news.js')
+  return new Promise((resolve, reject) => {
+    const articlesSectionTemp = path.resolve('src/templates/section-news.js')
+    const articleTemp = path.resolve('src/templates/news.js')
 
-  const { data } = await graphql(`
-    {
-      news {
-        articles {
-          id
-          teaser
-          slug
+    resolve(
+      graphql(
+        `
+          {
+            news {
+              articles {
+                id
+                teaser
+                slug
+              }
+              categories {
+                id
+                name_rubric
+                title
+                slug
+              }
+            }
+          }
+        `
+      ).then(result => {
+        if (result.errors) {
+          console.log(result.errors);
+          reject(result.errors);
         }
-        categories {
-          id
-          name_rubric
-          title
-          slug
-        }
-      }
-    }
-  `)
 
-  const article = data.news.articles;
-  const categories = data.news.categories;
+        const { data } = result
 
-  article.forEach(el => {
-    createPage({
-      path: `/${el.slug}/`,
-      component: articleTemp,
-      context: {
-        id: el.id
-      }
-    })
+        data.news.articles.forEach(el => {
+          createPage({
+            path: `/${el.slug}/`,
+            component: articleTemp,
+            context: {
+              id: el.id
+            }
+          })
+        });
+
+        data.news.categories.forEach(el => {
+          createPage({
+            path: `/${el.slug}/`,
+            component: articlesSectionTemp,
+            context: {
+              id: el.id
+            }
+          })
+        })
+      })
+    )
   });
-
-  categories.forEach(el => {
-    createPage({
-      path: `/${el.slug}/`,
-      component: articlesSectionTemp,
-      context: {
-        id: el.id
-      }
-    })
-  })
 }

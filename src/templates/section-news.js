@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { graphql, Link } from "gatsby"
 import gql from 'graphql-tag'
 import { useSubscription  } from "@apollo/react-hooks";
 import Layout from "../components/layout"
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 
 const GET_UPDATE_ARTICLES = gql`
   subscription {
@@ -38,6 +38,7 @@ export const query =  graphql`
 `
 
 const SectionNews = (props) => {
+  const [ countArticles, setCountArticles ] = useState(8)
   const { Meta } = Card;
   const { news } = props.data
   const { loading, error, data } = useSubscription(GET_UPDATE_ARTICLES)
@@ -47,11 +48,13 @@ const SectionNews = (props) => {
 
   const { articles_categories } = data.categories.find(item => item.slug === news.categories.slug)
 
+  const onLoad = () => setCountArticles(countArticles + 4)
+
   return (
     <Layout>
       <Row gutter={[16, 24]}>
         {
-          articles_categories.map(el => (
+          articles_categories.slice(0, countArticles).map(el => (
             <Col className="gutter-row" xs={24} md={12} lg={8} xl={6} key={el.article.id}>
               <Card
                 hoverable
@@ -63,6 +66,13 @@ const SectionNews = (props) => {
             </Col>
           ))
         }
+      </Row>
+      <Row>
+        <Col className="gutter-row" xs={24} style={{ textAlign: 'center' }}>
+          {
+            articles_categories.length > countArticles ? <Button onClick={onLoad} type="primary">Загрузить ещё</Button> : null
+          }
+        </Col>
       </Row>
     </Layout>
   )
