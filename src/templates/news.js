@@ -16,6 +16,7 @@ export const query = graphql`
 const News = ({ data }) => {
   const { news: { articles } } = data
 
+  console.log(1111)
   return (
     <Layout>
       <Link to="/">&larr; Назад</Link>

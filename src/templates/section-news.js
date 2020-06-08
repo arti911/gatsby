@@ -14,6 +14,7 @@ const GET_UPDATE_ARTICLES = gql`
           id
           title
           teaser
+          slug
         }
       }
     }
@@ -30,6 +31,7 @@ export const query =  graphql`
             id
             title
             teaser
+            slug
           }
         }
       }
@@ -60,7 +62,7 @@ const SectionNews = (props) => {
                 hoverable
                 cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>}
               >
-                <Link to={`/${el.article.id}`}>{el.article.title}</Link>
+                <Link to={`/${el.article.slug}`}>{el.article.title}</Link>
                 <Meta description={el.article.teaser} />
               </Card>
             </Col>
