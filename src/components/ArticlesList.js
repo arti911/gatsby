@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import { Card, Row, Col, Button } from 'antd'
 import { Link } from "gatsby"
 
-
 const ArticlesList = ({ articles=[] }) => {
   const [ countArticles, setCountArticles ] = useState(8)
   const { Meta } = Card;
+  const key = 'updatable';
 
   const onLoad = () => setCountArticles(countArticles + 4)
-
   return (
     <>
       <Row gutter={[16, 24]}>

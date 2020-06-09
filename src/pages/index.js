@@ -6,6 +6,7 @@ import ArticlesList from '../components/ArticlesList'
 import { useQuery, useLazyQuery  } from "@apollo/react-hooks";
 import gql from 'graphql-tag'
 import { get } from 'lodash'
+import { Spin } from 'antd'
 
 const GET_ARTICLES = gql`
   query {
@@ -55,7 +56,7 @@ export const articlesHasura = graphql`
 const IndexPage = (props) => {
   const [ articles, setArticles ] = useState(props.data.news.articles)
   const { loading: maxArticleLoading, data: maxArticle } = useQuery(GET_MAX_UPDATE)
-  const [ getArticles, { loading, data: updatedArticles }] = useLazyQuery(GET_ARTICLES)
+  const [ getArticles, { loading, error, data: updatedArticles }] = useLazyQuery(GET_ARTICLES)
 
   useEffect(() => {
     if (maxArticle) {
@@ -66,6 +67,8 @@ const IndexPage = (props) => {
   }, [maxArticleLoading])
 
   useEffect(() => {
+    // console.log('error', error)
+    // console.log('updatedArticles',updatedArticles)
     if (updatedArticles) {
       setArticles(updatedArticles.articles)
     }
@@ -77,7 +80,12 @@ const IndexPage = (props) => {
   return (
     <LayoutMain>
       <SEO title="Home" />
-      <ArticlesList articles={articles} />
+      {
+        loading ?
+          <Spin spinning={true} />
+        :
+          <ArticlesList articles={articles} />
+      }
     </LayoutMain>
   )
 }
