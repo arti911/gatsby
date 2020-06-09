@@ -62,7 +62,6 @@ const News = ({ data }) => {
     }
   }, [loading])
 
-  console.log(updatedArticle)
   const needReload = () => +new Date(get(data, 'news.articles.updated_at', 'Mon Jun 08 2020 23:32:40 GMT+0300')) !== +new Date(get(maxArticle, 'articles_aggregate.aggregate.max.updated_at', 'Mon Jun 08 2020 23:32:40 GMT+0300'))
 
   return (

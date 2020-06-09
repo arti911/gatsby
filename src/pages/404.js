@@ -1,10 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
+import Layout from "../components/layout"
+import { Link, graphql } from "gatsby"
 import gql from 'graphql-tag'
 import { useQuery  } from "@apollo/react-hooks";
-import Layout from "../components/layout"
-import { Link } from "gatsby"
 
-const GET_ARTICLE = gql`
+const page = gql`
   {
     articles {
       title
@@ -12,24 +12,41 @@ const GET_ARTICLE = gql`
       slug
     }
   }
+`
+
+export const GET_ARTICLE = graphql`
+  {
+    news {
+      articles {
+        title
+        body
+        slug
+      }
+    }
+  }
 `;
 
 const NotFoundPage = (props) => {
-  // const { loading, error, data } = useQuery(GET_ARTICLE)
-  // const { location: { pathname } } = props
+  const [ slug, setSlug ] = useState(props.location.pathname.split("").splice(1).join(""))
 
-  // if (loading) return 'Loading...'
-  // if (error) return `Error: ${error.message}`
-
-  // const slug = pathname.split("").splice(1).join("")
-  // const article = data.articles.find(art => art.slug === slug)
+  const { loading, data } = useQuery(page)
+  
+  if (loading) return 'Loading..'
+  console.log('gql', data.articles)
 
   return (
     <Layout>
       <Link to="/">&larr; Назад</Link>
-      <h1>Not Found Page</h1>
-      {/* <h1>{article.title}</h1>
-      <div>{article.body}</div> */}
+      {/* <h1>Not Found Page</h1> */}
+      {
+        data.articles.map(item => {
+          if (item.slug === slug) {
+            return (
+              <pre>{JSON.stringify(item, null, 1)}</pre>
+            )
+          }  
+        })
+      }
     </Layout>
   )
 }
