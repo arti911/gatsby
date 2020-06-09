@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Card, Row, Col, Button } from 'antd'
 import { Link } from "gatsby"
 
-const ArticlesList = ({ articles }) => {
+
+const ArticlesList = ({ articles=[] }) => {
   const [ countArticles, setCountArticles ] = useState(8)
   const { Meta } = Card;
 
@@ -11,7 +12,7 @@ const ArticlesList = ({ articles }) => {
   return (
     <>
       <Row gutter={[16, 24]}>
-        {articles.slice(0, countArticles).map(article =>
+        {articles.map(article =>
           (
             <Col className="gutter-row" xs={24} md={12} lg={8} xl={6} key={article.id}>
               <Card
