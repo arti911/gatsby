@@ -1,1 +1,1 @@
-{"componentChunkName":"component---src-templates-news-js","path":"/123/","result":{"data":{"news":{"articles":{"title":"123","body":"123"}}},"pageContext":{"id":94}}}
+{"componentChunkName":"component---src-templates-news-js","path":"/123/","result":{"data":{"news":{"articles":{"id":94,"title":"123","body":"123","updated_at":"2020-06-01T20:09:49.810911+00:00"}}},"pageContext":{"id":94}}}

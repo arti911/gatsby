@@ -1,1 +1,1 @@
-{"componentChunkName":"component---src-templates-news-js","path":"/Testo/","result":{"data":{"news":{"articles":{"title":"Тесто","body":"Exciter"}}},"pageContext":{"id":93}}}
+{"componentChunkName":"component---src-templates-news-js","path":"/Testo/","result":{"data":{"news":{"articles":{"id":93,"title":"Тесто","body":"Exciter","updated_at":"2020-06-01T20:08:01.074756+00:00"}}},"pageContext":{"id":93}}}
