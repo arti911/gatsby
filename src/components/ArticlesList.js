@@ -1,25 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, Row, Col, Button } from 'antd'
 import { Link } from "gatsby"
 
-const ArticlesList = ({ articles=[] }) => {
-  const [ countArticles, setCountArticles ] = useState(8)
+const ArticlesList = ({ articles=[], onLoadArticles }) => {
   const { Meta } = Card;
-  const key = 'updatable';
 
-  const onLoad = () => setCountArticles(countArticles + 4)
   return (
     <>
       <Row gutter={[16, 24]}>
         {articles.map(article =>
           (
-            <Col className="gutter-row" xs={24} md={12} lg={8} xl={6} key={article.id}>
+            <Col className="gutter-row" xs={24} md={12} lg={8} xl={6} key={article.id || article.article.id}>
               <Card
                   hoverable
                   cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
               >
-                <Link to={`/${article.slug}`}>{article.title}</Link>
-                <Meta description={article.teaser} />
+                <Link to={`/${article.slug || article.article.slug}`}>{article.title || article.article.title}</Link>
+                <Meta description={article.teaser || article.article.teaser} />
               </Card>
             </Col>
           )
@@ -28,7 +25,7 @@ const ArticlesList = ({ articles=[] }) => {
       <Row>
         <Col className="gutter-row" xs={24} style={{ textAlign: 'center' }}>
           {
-            articles.length > countArticles ? <Button onClick={onLoad} type="primary">Загрузить ещё</Button> : null
+            <Button onClick={onLoadArticles} type="primary">Загрузить ещё</Button>
           }
         </Col>
       </Row>

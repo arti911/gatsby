@@ -33,9 +33,9 @@ const GET_MAX_UPDATE = gql`
 `
 
 export const articlesHasura = graphql`
-  query {
+  query qq {
     news {
-      articles(order_by: { updated_at: desc }) {
+      articles(limit: 8, order_by: { updated_at: desc }) {
         id
         title
         teaser
@@ -54,7 +54,9 @@ export const articlesHasura = graphql`
 `
 
 const IndexPage = props => {
+  console.log(props)
   const [articles, setArticles] = useState(props.data.news.articles)
+  const [ countArticles, setCountArticles ] = useState(4)
   const {
     loading: maxUpdatedLoading,
     error: errorUpdatedData,
@@ -101,12 +103,16 @@ const IndexPage = props => {
   }, [maxUpdatedLoading])
 
   useEffect(() => {
-    // console.log('error', error)
-    // console.log('updatedArticles',updatedArticles)
     if (updatedArticlesData) {
       setArticles(updatedArticlesData.articles)
     }
   }, [updatedArticlesLoading])
+
+  const loadArticles = () => {
+    return {
+      "offset": 1
+    }
+  }
 
   return (
     <LayoutMain>
@@ -114,7 +120,7 @@ const IndexPage = props => {
       {updatedArticlesLoading || maxUpdatedLoading ? (
         <Spin spinning={true} />
       ) : (
-        <ArticlesList articles={articles} />
+        <ArticlesList articles={articles} onLoadArticles={loadArticles} />
       )}
     </LayoutMain>
   )

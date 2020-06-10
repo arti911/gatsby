@@ -41,8 +41,13 @@ export const query = graphql`
 
 const News = ({ data }) => {
   const [ article, setArticle ] = useState(data.news.articles)
-  const { loading: maxArticleLoading, data: maxArticle } = useQuery(GET_MAX_UPDATE)
+  const { loading: maxArticleLoading, data: maxArticle } = useQuery(GET_MAX_UPDATE, {
+    pollInterval: 0,
+    fetchPolicy: "network-only",
+    onCompleted: event => console.log("onCompleted", event),
+  })
   const [ getArticle, { loading, data: updatedArticle }] = useLazyQuery(GET_UPDATE_ARTICLE, {
+    fetchPolicy: "network-only",
     variables: {
       "id": data.news.articles.id
     }

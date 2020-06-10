@@ -15,26 +15,29 @@ const pageArticle = gql`
 `
 
 const NotFoundPage = (props) => {
-  const slug = props.location.pathname.split("").splice(1).join("")
+  const slug = props.location.pathname.split("/")
 
   const { loading, data } = useQuery(pageArticle, {
     variables: {
-      "slug": slug
+      "slug": slug[slug.length - 1]
     }
   })
   
   if (loading) return 'Loading..'
-  console.log('gql', data)
 
   return (
     <Layout>
-      <Link to="/">&larr; Назад</Link>
-      {/* <h1>Not Found Page</h1> */}
       {
-        data.articles.map(item => (
-            <pre key={item.slug}>{JSON.stringify(item, null, 1)}</pre>
+        (data.articles.length) ? (
+          data.articles.map(item => (
+            <>
+              <Link to="/">&larr; Назад</Link>
+              <pre key={item.slug}>{JSON.stringify(item, null, 1)}</pre>
+            </>
+          ))
+        ) : (
+            <h1>Not Found Page</h1>
           )
-        )
       }
     </Layout>
   )
