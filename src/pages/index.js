@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react"
 import LayoutMain from "../components/layout"
 import SEO from "../components/seo"
-import 'antd/dist/antd.css'
-import ArticlesList from '../components/ArticlesList'
-import { useQuery, useLazyQuery  } from "@apollo/react-hooks";
-import gql from 'graphql-tag'
-import { get } from 'lodash'
-import { Spin } from 'antd'
+import "antd/dist/antd.css"
+import ArticlesList from "../components/ArticlesList"
+import { useQuery, useLazyQuery } from "@apollo/react-hooks"
+import gql from "graphql-tag"
+import { get } from "lodash"
+import { Spin } from "antd"
 
 const GET_ARTICLES = gql`
   query {
-    articles(order_by: {updated_at: desc}) {
+    articles(order_by: { updated_at: desc }) {
       id
       title
       teaser
@@ -18,7 +18,7 @@ const GET_ARTICLES = gql`
       updated_at
     }
   }
-`;
+`
 
 const GET_MAX_UPDATE = gql`
   {
@@ -29,13 +29,13 @@ const GET_MAX_UPDATE = gql`
         }
       }
     }
-  }  
+  }
 `
 
 export const articlesHasura = graphql`
   query {
     news {
-      articles(order_by: {updated_at: desc}) {
+      articles(order_by: { updated_at: desc }) {
         id
         title
         teaser
@@ -53,39 +53,69 @@ export const articlesHasura = graphql`
   }
 `
 
-const IndexPage = (props) => {
-  const [ articles, setArticles ] = useState(props.data.news.articles)
-  const { loading: maxArticleLoading, data: maxArticle } = useQuery(GET_MAX_UPDATE)
-  const [ getArticles, { loading, error, data: updatedArticles }] = useLazyQuery(GET_ARTICLES)
+const IndexPage = props => {
+  const [articles, setArticles] = useState(props.data.news.articles)
+  const {
+    loading: maxUpdatedLoading,
+    error: errorUpdatedData,
+    data: maxUpdatedData,
+  } = useQuery(GET_MAX_UPDATE, {
+    pollInterval: 0,
+    fetchPolicy: "network-only",
+    onCompleted: event => console.log("onCompleted", event),
+  })
+  const [
+    getArticles,
+    {
+      loading: updatedArticlesLoading,
+      error: errorArticlesData,
+      data: updatedArticlesData,
+    },
+  ] = useLazyQuery(GET_ARTICLES, { fetchPolicy: "network-only" })
+
+  function needReload() {
+    return (
+      +new Date(
+        get(
+          props,
+          "data.news.articles_aggregate.aggregate.max.updated_at",
+          "Mon Jun 08 2020 23:32:40 GMT+0300"
+        )
+      ) !==
+      +new Date(
+        get(
+          maxUpdatedData,
+          "articles_aggregate.aggregate.max.updated_at",
+          "Mon Jun 08 2020 23:32:40 GMT+0300"
+        )
+      )
+    )
+  }
 
   useEffect(() => {
-    if (maxArticle) {
+    if (maxUpdatedData) {
       if (needReload()) {
         getArticles()
       }
     }
-  }, [maxArticleLoading])
+  }, [maxUpdatedLoading])
 
   useEffect(() => {
     // console.log('error', error)
     // console.log('updatedArticles',updatedArticles)
-    if (updatedArticles) {
-      setArticles(updatedArticles.articles)
+    if (updatedArticlesData) {
+      setArticles(updatedArticlesData.articles)
     }
-  }, [loading])
+  }, [updatedArticlesLoading])
 
-  const needReload = () => +new Date(get(props, 'data.news.articles_aggregate.aggregate.max.updated_at', 'Mon Jun 08 2020 23:32:40 GMT+0300')) !== +new Date(get(maxArticle, 'articles_aggregate.aggregate.max.updated_at', 'Mon Jun 08 2020 23:32:40 GMT+0300'))
-
-  
   return (
     <LayoutMain>
       <SEO title="Home" />
-      {
-        loading ?
-          <Spin spinning={true} />
-        :
-          <ArticlesList articles={articles} />
-      }
+      {updatedArticlesLoading || maxUpdatedLoading ? (
+        <Spin spinning={true} />
+      ) : (
+        <ArticlesList articles={articles} />
+      )}
     </LayoutMain>
   )
 }
