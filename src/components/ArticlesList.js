@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Row, Col, Button } from 'antd'
 import { Link } from "gatsby"
 
-const ArticlesList = ({ articles=[], onLoadArticles }) => {
+const ArticlesList = ({ articles=[], onLoadArticles, showBtn }) => {
   const { Meta } = Card;
 
   return (
@@ -24,8 +24,10 @@ const ArticlesList = ({ articles=[], onLoadArticles }) => {
       </Row>
       <Row>
         <Col className="gutter-row" xs={24} style={{ textAlign: 'center' }}>
-          {
-            <Button onClick={onLoadArticles} type="primary">Загрузить ещё</Button>
+          {showBtn ?
+              <Button onClick={onLoadArticles} type="primary">Загрузить ещё</Button>
+            :
+              null
           }
         </Col>
       </Row>

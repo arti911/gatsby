@@ -30,10 +30,10 @@ const NotFoundPage = (props) => {
       {
         (data.articles.length) ? (
           data.articles.map(item => (
-            <>
+            <React.Fragment key={item.slug}>
               <Link to="/">&larr; Назад</Link>
-              <pre key={item.slug}>{JSON.stringify(item, null, 1)}</pre>
-            </>
+              <pre>{JSON.stringify(item, null, 1)}</pre>
+            </React.Fragment>
           ))
         ) : (
             <h1>Not Found Page</h1>
