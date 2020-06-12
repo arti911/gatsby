@@ -40,12 +40,14 @@
     "@babel/core": "^7.10.2",
     "@storybook/addon-actions": "^5.3.19",
     "@storybook/addon-links": "^5.3.19",
+    "@storybook/addon-storyshots": "^5.3.19",
     "@storybook/addons": "^5.3.19",
     "@storybook/react": "^5.3.19",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "gh-pages": "^2.2.0",
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "react-test-renderer": "^16.13.1"
   },
   "keywords": [
     "gatsby"

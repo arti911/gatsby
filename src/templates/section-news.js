@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { useQuery, useLazyQuery  } from "@apollo/react-hooks";
 import Layout from "../components/layout"
 import { get } from 'lodash'
-import ArticlesList from "../components/ArticlesList"
+import ArticlesList from "../components/ArticlesList/ArticlesList"
 import { Spin } from "antd"
 
 const GET_UPDATE_ARTICLES = gql`
@@ -156,7 +156,7 @@ const SectionNews = ({ data }) => {
       {updatedArticlesCategory || maxArticlesLoading ? (
         <Spin spinning={true} />
       ) : (
-        <ArticlesList articles={articlesCategories} onLoadArticles={loadArticles} showBtn={isBtn} />
+        <ArticlesList articles={articlesCategories} onLoadArticles={loadArticles} loadMore={isBtn} />
       )}
     </Layout>
   )

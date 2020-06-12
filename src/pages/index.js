@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import LayoutMain from "../components/layout"
 import SEO from "../components/seo"
 import "antd/dist/antd.css"
-import ArticlesList from "../components/ArticlesList"
+import ArticlesList from "../components/ArticlesList/ArticlesList"
 import { useQuery, useLazyQuery } from "@apollo/react-hooks"
 import gql from "graphql-tag"
 import { get } from "lodash"
@@ -146,7 +146,7 @@ const IndexPage = props => {
       {updatedArticlesLoading || maxUpdatedLoading ? (
         <Spin spinning={true} />
       ) : (
-        <ArticlesList articles={articles} onLoadArticles={loadArticles} showBtn={isBtn} />
+        <ArticlesList articles={articles} onLoadArticles={loadArticles} loadMore={isBtn} />
       )}
     </LayoutMain>
   )
